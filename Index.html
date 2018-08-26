@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>EventListener for all present and all future child nodes</title>
+    <style>
+        .active {background-color:lightgray;}
+        li {cursor: pointer;}
+        #mySPAN {color:red;}
+    </style>
+</head>
+<body>
+    <h1>Add eventListener to all present and all future child nodes</h1>
+    <p>
+        EventListener is added to the parent-node (UL), but is also enabled when clicking on child-nodes(LI) - even if they are added to DOM after pageload.<br />
+        No JQuery - only jacascript.<br/><br/>
+    </p>
+
+    <hr/>
+    <button id="myButton">Add item</button>
+    <ul id="myUL">
+        <li>item 1</li>
+        <li>item 2</li>
+        <li>item 3</li>
+    </ul>
+    <span id="mySPAN" title="Last selected item"></span>
+
+    <script>
+        var myH2 = document.getElementById("myH2");
+        var myUL = document.getElementById("myUL");
+        var myButton = document.getElementById("myButton");
+
+        myButton.addEventListener("click", function () {
+            myUL.innerHTML += "<li>item " + (myUL.children.length + 1) + "</li>";
+        });
+
+        //EventListener for parent-node - and all present and all future child-nodes
+        myUL.addEventListener("click", function (e) {
+            if (e.target.nodeName === "LI") {
+                var clickedOnLI = e.target;//LI node clicked on
+                var parentUL = clickedOnLI.parentNode;//Parent UL to the LI clicked on
+
+                //remove class active from all
+                var ActiveLIs = parentUL.getElementsByClassName("active");//LIs with class active
+                while (ActiveLIs.length > 0) {
+                    ActiveLIs[0].classList.remove('active');
+                }
+                                
+                clickedOnLI.classList.add("active");//add class active
+                mySPAN.innerHTML = clickedOnLI.innerHTML;
+            }
+        });
+    </script>
+</body>
+</html>
